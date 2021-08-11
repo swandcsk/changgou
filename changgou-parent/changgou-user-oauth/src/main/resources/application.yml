@@ -4,7 +4,7 @@ spring:
   application:
     name: user-auth
   redis:
-    host: 192.168.31.200
+    host: 192.168.21.132
     port: 6379
     password:
     jedis:
@@ -14,9 +14,9 @@ spring:
         min-idle: 0
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://192.168.31.200:3306/changgou_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
+    url: jdbc:mysql://192.168.21.132:3306/changgou_oauth?useUnicode=true&characterEncoding=utf-8&useSSL=false&allowMultiQueries=true&serverTimezone=UTC
     username: root
-    password: root
+    password: 123456
   main:
     allow-bean-definition-overriding: true
 eureka:
@@ -28,16 +28,16 @@ eureka:
 auth:
   ttl: 3600  #token存储到redis的过期时间
   clientId: changgou
-  clientSecret: robod666
+  clientSecret: changgou
   cookieDomain: localhost
   cookieMaxAge: -1
 
 encrypt:
   key-store:
-    location: classpath:/robod666.jks # 证书路径
-    secret: robod666                  # 密钥
-    alias: robod666                   # 证书的别名
-    password: robod666                # 证书密码
+    location: classpath:/changgou.jks # 证书路径
+    secret: changgou                  # 密钥
+    alias: changgou                   # 证书的别名
+    password: changgou                # 证书密码
 
 logging:
   level:

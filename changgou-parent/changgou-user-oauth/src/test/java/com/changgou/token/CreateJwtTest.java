@@ -7,6 +7,7 @@ import org.springframework.core.io.ClassPathResource;
 import org.springframework.security.jwt.Jwt;
 import org.springframework.security.jwt.JwtHelper;
 import org.springframework.security.jwt.crypto.sign.RsaSigner;
+import org.springframework.security.jwt.crypto.sign.RsaVerifier;
 import org.springframework.security.oauth2.provider.token.store.KeyStoreKeyFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
@@ -75,4 +76,19 @@ public class CreateJwtTest {
 //        Map hashMap = new HashMap();
 //        hashMap.
 //    }
+
+    /**
+     * 解析令牌
+     *
+     */
+    @Test
+    public void testParseToken(){
+        String token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlcyI6IlJPTEVfVklQLFJPTEVfVVNFUiIsIm5hbWUiOiJpdGhlaW1hIiwiaWQiOiIxIn0.oNiqGqqsoTARQyzSPM3rdxw6Etp7l8DZ7d4AYS61zJ724a0a7XhI0fWuY3rknutJfDmUsOD7cnA1eVfvnCjuj42WRZGNBdYuNfdN68hBwCFiW8LMN7ke3OgH7FqyLwxFvCsUPC6LeXDasai3kuetCef1iXfIj8JlUfAsGWgqfpDnzvQn8ggeta84M6geR0bbt9cZPq-XqRhTXRM5PoMWnO9juwzFdm2xkmyO7FilO-pCkXKS4YvgMS7bgi20YfpNcadJge3IgWnOnOs48OiAZqeI2BcXO45t0Jwvja2z24WSIAlkTlOlYHQarFOf6PUvWWxORLAi4ytlsws590E_dQ";
+        String publickey = "-----BEGIN PUBLIC KEY-----MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAoZT6+HO1EAT8mTHJlK6LO3vM8lweAcMhuLFFZ8zIQfjocTYlPM6QCsrJ9bB5sGQFw6tdGktMuOyV8oPjeFA8iR2cUpFbTE+g5L0TCz04A8oMP43eRBHV1YeEv/dCTAWt9enJ8LNaIRzZafhs0a9p8tKy8oguM2lHt9UEuzqTF7hZDUEP5yJOPkBgk7LZVaXR6OYsxz5ckT76Z8lotcq3ZDo7vIAumLqLScx6JafCuFvvl6VoPfAp/7NwM3cQAwpyc+lvUhL/nM/uDukhcKM/JKdy/sXkCPl3hqDogtGHTN+Ui4biVkV2IIDj428jxV1aTVywWaCQ+hW0ihXEMGzjrQIDAQAB-----END PUBLIC KEY-----";
+        Jwt jwt = JwtHelper.decodeAndVerify(token,
+                new RsaVerifier(publickey));
+        String claims = jwt.getClaims();
+        System.out.println(claims);
+    }
+
 }

@@ -10,6 +10,7 @@ import entity.Result;
 import entity.StatusCode;
 import org.apache.http.HttpResponse;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.Cookie;
@@ -149,7 +150,7 @@ public class UserController {
      * @param id
      * @return
      */
-    @GetMapping("/{id}")
+    @GetMapping({"/{id}","/load/{id}"})
     public Result<User> findById(@PathVariable String id){
         //调用UserService实现根据主键查询User
         User user = userService.findById(id);
@@ -158,8 +159,10 @@ public class UserController {
 
     /***
      * 查询User全部数据
+     * //只允许管理员admin角色访问，其他角色无法访问
      * @return
      */
+    @PreAuthorize("hasAnyRole('admin')")
     @GetMapping
     public Result<List<User>> findAll(){
         //调用UserService实现查询所有User

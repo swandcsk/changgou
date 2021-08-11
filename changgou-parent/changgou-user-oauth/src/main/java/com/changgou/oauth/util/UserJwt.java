@@ -12,7 +12,24 @@ public class UserJwt extends User {
     private String id;    //用户ID
     private String name;  //用户名字
 
-    private String comny;//设置公司
+    private String company;//公司名称
+    private String address;//公司地址
+
+    public String getCompany() {
+        return company;
+    }
+
+    public void setCompany(String company) {
+        this.company = company;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
 
     public UserJwt(String username, String password, Collection<? extends GrantedAuthority> authorities) {
         super(username, password, authorities);

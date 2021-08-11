@@ -1,6 +1,7 @@
 package com.changgou.filter;
 
 import com.changgou.util.JwtUtil;
+import io.netty.util.internal.StringUtil;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.core.Ordered;
@@ -59,21 +60,32 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
             //响应空数据
             return response.setComplete();
         }
+        //令牌判断是否为空，如果不为空，将令牌放到头文件中，放行
+
+
         //如果有令牌,则校验令牌是否有效
-        try {
-            JwtUtil.parseJWT(token);
-        } catch (Exception e) {
-            e.printStackTrace();
+        //try {
+            //JwtUtil.parseJWT(token);
+        //} catch (Exception e) {
+         //   e.printStackTrace();
             //无效拦截
+        //}
+        //令牌为空，则不允许访问，直接拦截 bearer
+        if(StringUtils.isEmpty(token)){
             //设置没有权限的状态码 401
             response.setStatusCode(HttpStatus.UNAUTHORIZED);
             //响应空数据
             return response.setComplete();
+        }else{
+            //判断当前令牌是否有bearer前缀，如果没有，则添加前缀bearer
+            if(!token.startsWith("bearer ")&&!token.startsWith("Bearer ")){
+                token = "bearer " + token;
+            }
         }
-
-        //将令牌封装到头文件中
-        request.mutate().header(AUTHORIZE_TOKEN,token);
-
+        if(!hasToken){
+            //将令牌封装到头文件中
+            request.mutate().header(AUTHORIZE_TOKEN,token);
+        }
         //有效放行
         return chain.filter(exchange);
     }

@@ -24,7 +24,7 @@ public class JWTTest {
     //创建令牌
     @Test
     public void createJWT() {
-        ClassPathResource classPathResource = new ClassPathResource("robod666.jks");
+        ClassPathResource classPathResource = new ClassPathResource("changgou.jks");
         KeyStoreKeyFactory keyStoreKeyFactory = new KeyStoreKeyFactory(classPathResource, "robod666".toCharArray());
         KeyPair keyPair = keyStoreKeyFactory.getKeyPair("robod666");
         PrivateKey privateKey = keyPair.getPrivate();

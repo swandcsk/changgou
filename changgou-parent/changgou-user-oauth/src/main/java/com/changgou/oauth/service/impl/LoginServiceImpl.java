@@ -25,6 +25,7 @@ import java.util.Map;
 @Service
 public class LoginServiceImpl implements LoginService {
 
+    //实现请求发送
     @Autowired
     private RestTemplate restTemplate;
 
