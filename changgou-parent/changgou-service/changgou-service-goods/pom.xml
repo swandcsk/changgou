@@ -20,6 +20,11 @@
             <artifactId>changgou-service-goods-api</artifactId>
             <version>1.0-SNAPSHOT</version>
         </dependency>
+        <!--oauth2.0认证-->
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-oauth2</artifactId>
+        </dependency>
     </dependencies>
 
 </project>

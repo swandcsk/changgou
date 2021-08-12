@@ -34,6 +34,12 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         ServerHttpRequest request = exchange.getRequest();
         ServerHttpResponse response = exchange.getResponse();
 
+        //用户如果是登录或者一些不需要做权限认证的请求,直接放行
+        String uri = request.getURI().toString();
+        if(!URLFilter.hasAuthorize(uri)){
+            return chain.filter(exchange);
+        }
+
         //获取用户令牌信息
         // 1)请求头中
         String token = request.getHeaders().getFirst(AUTHORIZE_TOKEN);

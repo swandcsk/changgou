@@ -66,6 +66,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         }
 
         //从数据库加载查询用户信息
+        /**
+         * 1.没有令牌,生成令牌(admin)
+         * 2.令牌需要携带过去
+         * 3.令牌需要存放到Header中
+         * 4.请求->Feign调用->拦截器RequestInterceptor->Feign调用之前拦截
+         */
         com.changgou.user.pojo.User user = userFeign.findById(username).getData();
         if (user == null ) {
             return null;

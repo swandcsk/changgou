@@ -50,6 +50,14 @@ spring:
               filters:
                 - StripPrefix=1
 
+            - id: changgou_order_route
+              uri: lb://order
+              #路由断言 ,路由规则配置
+              predicates:
+                - Path=/api/cart/**,/api/categoryReport/**,/api/orderConfig/**,/api/order/**,/api/orderItem/**,/api/orderItem/**,/api/orderLog/**,/api/preferential/**,/api/returnCause/**,/api/returnOrder/**,/api/returnOrderItem/**
+              filters:
+                - StripPrefix=1
+
 
   redis:
     host: 192.168.21.132
