@@ -85,6 +85,7 @@ public class CartServiceImpl implements CartService {
         orderItem.setCategoryId2(spu.getCategory2Id());
         orderItem.setCategoryId3(spu.getCategory3Id());
         orderItem.setSpuId(spu.getId());
+        orderItem.setSkuId(sku.getId());
         orderItem.setName(sku.getName());
         orderItem.setPrice(sku.getPrice());
         orderItem.setNum(num);

@@ -4,6 +4,7 @@ import com.changgou.goods.pojo.Sku;
 import com.github.pagehelper.PageInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:传智播客
@@ -11,6 +12,13 @@ import java.util.List;
  * @Date 2019/6/14 0:16
  *****/
 public interface SkuService {
+
+
+    /**
+     * 商品递减
+     * @param decrmap
+     */
+    void decrCount(Map<String,Integer> decrmap);
 
     /***
      * Sku多条件分页查询

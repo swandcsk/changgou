@@ -88,7 +88,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         //创建User对象
         //String permissions = "USER";
-        String permissions = "user,vip";//指定用户的角色信息
+        String permissions = "user,vip,admin";//指定用户的角色信息
         UserJwt userDetails = new UserJwt(username,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
 
         return userDetails;

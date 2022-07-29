@@ -66,4 +66,6 @@ public interface UserService {
      * @return
      */
     List<User> findAll();
+
+    void addPoints(String username, Integer points);
 }

@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 /****
  * @Author:传智播客
@@ -25,7 +26,18 @@ public class SkuController {
     @Autowired
     private SkuService skuService;
 
-
+    /**
+     * 商品信息递减
+     * Map<Key,Value> key:要递减的商品ID
+     *                 value:要递减的数量
+     * @return
+     */
+    @GetMapping(value = "/decr/count")
+    public Result decrCount(@RequestParam Map<String,Integer> decrmap){
+        //调用Service实现递减
+        skuService.decrCount(decrmap);
+        return new Result(true,StatusCode.OK,"商品库存递减成功！");
+    }
 
 
     /***

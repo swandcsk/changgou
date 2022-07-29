@@ -25,6 +25,19 @@ public class AddressServiceImpl implements AddressService {
 
 
     /**
+     * 根据用户名查询用户收件地址列表
+     * @param username
+     * @return
+     */
+    @Override
+    public List<Address> list(String username) {
+        //select * from tb_address where username = ?
+        Address address = new Address();
+        address.setUsername(username);
+        return addressMapper.select(address);
+    }
+
+    /**
      * Address条件+分页查询
      * @param address 查询条件
      * @param page 页码
