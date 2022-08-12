@@ -1,10 +1,13 @@
 package com.changgou;
 
+import org.junit.Test;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.SpringBootVersion;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.gateway.filter.ratelimit.KeyResolver;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.SpringVersion;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
 
@@ -13,6 +16,7 @@ import reactor.core.publisher.Mono;
 public class GatewayWebApplication {
     public static void main(String[] args) {
         SpringApplication.run(GatewayWebApplication.class,args);
+
     }
 
 

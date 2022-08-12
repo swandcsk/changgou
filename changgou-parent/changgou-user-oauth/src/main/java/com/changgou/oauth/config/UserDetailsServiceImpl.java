@@ -56,7 +56,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
                 return new User(
                         username,//客户端ID
                         clientSecret,//客户端密钥-》加密操作
-                        AuthorityUtils.commaSeparatedStringToAuthorityList(""));//权限
+                        AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));//权限
             }
         }
 
@@ -88,7 +88,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
 
         //创建User对象
         //String permissions = "USER";
-        String permissions = "user,vip,admin";//指定用户的角色信息
+        String permissions = "admin";//指定用户的角色信息
         UserJwt userDetails = new UserJwt(username,pwd,AuthorityUtils.commaSeparatedStringToAuthorityList(permissions));
 
         return userDetails;

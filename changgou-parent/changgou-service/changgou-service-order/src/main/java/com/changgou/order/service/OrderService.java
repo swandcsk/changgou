@@ -3,6 +3,7 @@ package com.changgou.order.service;
 import com.changgou.order.pojo.Order;
 import com.github.pagehelper.PageInfo;
 
+import java.text.ParseException;
 import java.util.List;
 
 /****
@@ -12,6 +13,24 @@ import java.util.List;
  *****/
 public interface OrderService {
 
+
+    /**
+     * 删除【修改状态】订单回滚库存
+     * @param outtradeno
+     *
+     */
+    void deleteOrder(String outtradeno);
+
+
+    /**
+     * 修改订单状态
+     * 1.修改支付时间
+     * 2.修改支付状态
+     * @param outtradeno    :订单号
+     * @param paytime       :支付时间
+     * @param transactionid :交易流水号
+     */
+    void updateStatus(String outtradeno,String paytime,String transactionid) throws ParseException;
 
     /***
      * Order多条件分页查询

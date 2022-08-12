@@ -11,12 +11,18 @@ import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import entity.FeignInterceptor;
 import entity.IdWorker;
+import org.springframework.amqp.AmqpException;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessagePostProcessor;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 /****
@@ -45,6 +51,55 @@ public class OrderServiceImpl implements OrderService {
 
     @Autowired
     private UserFeign userFeign;
+
+    @Autowired
+    private RabbitTemplate rabbitTemplate;
+
+    /**
+     * 删除【修改状态】订单回滚库存
+     * @param outtradeno
+     *
+     */
+    @Override
+    public void deleteOrder(String outtradeno) {
+        Order order = orderMapper.selectByPrimaryKey(outtradeno);
+
+        //修改状态
+        order.setUpdateTime(new Date());
+        order.setPayStatus("2");//支付失败
+        //修改到数据中
+        orderMapper.updateByPrimaryKeySelective(order);
+
+        //回滚库存-》作业-》调用goods微服务
+    }
+
+    /**
+     * 修改订单状态
+     * 1.修改支付时间
+     * 2.修改支付状态
+     * @param outtradeno    :订单号
+     * @param paytime       :支付时间
+     * @param transactionid :交易流水号
+     */
+    @Override
+    public void updateStatus(String outtradeno, String paytime, String transactionid) throws ParseException {
+        //时间转换
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMddHHmmss");
+        Date payTimeInfo = simpleDateFormat.parse(paytime);
+
+        //查询订单
+        Order order = orderMapper.selectByPrimaryKey(outtradeno);
+
+        //修改订单信息
+        order.setPayTime(payTimeInfo);
+        order.setPayStatus("1");//支付状态
+        order.setTransactionId(transactionid);//交易流水号
+
+        //修改到数据库中
+        orderMapper.updateByPrimaryKeySelective(order);
+
+    }
+
 
     /**
      * 增加Order
@@ -122,7 +177,22 @@ public class OrderServiceImpl implements OrderService {
 
         //添加用户积分活跃度 +1
         userFeign.addPoints(1);
+
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        System.out.println("创建订单时间："+ simpleDateFormat.format(new Date()));
+
+        //添加订单
+        rabbitTemplate.convertAndSend("orderDelayQueue", (Object) order.getId(), new MessagePostProcessor() {
+            @Override
+            public Message postProcessMessage(Message message) throws AmqpException {
+                //设置延时读取
+                message.getMessageProperties().setExpiration("10000");
+                return message;
+            }
+        });
     }
+
+
 
 
     /**
