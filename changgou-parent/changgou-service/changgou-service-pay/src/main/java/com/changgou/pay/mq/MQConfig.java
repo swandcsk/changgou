@@ -35,6 +35,7 @@ public class MQConfig {
     /**
      * 队列绑定交换机
      */
+    @Bean
     public Binding orderQueueExchange(Queue orderQueue,Exchange orderExchange){
         return BindingBuilder.bind(orderQueue).to(orderExchange).with(env.getProperty("mq.pay.routing.key")).noargs();
     }

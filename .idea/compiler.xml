@@ -19,6 +19,7 @@
         <module name="changgou-service-file" />
         <module name="changgou-service-goods" />
         <module name="changgou-service-goods-api" />
+        <module name="changgou-service-seckill-api" />
         <module name="changgou-service-user" />
         <module name="changgou-service-canal" />
         <module name="changgou-service-pay" />
@@ -26,37 +27,14 @@
         <module name="changgou-service-user-api" />
         <module name="changgou-common-db" />
         <module name="code-template" />
+        <module name="changgou-service-seckill" />
         <module name="changgou-gateway-web" />
         <module name="changgou-service-order-api" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="changgou-common" target="1.8" />
-      <module name="changgou-common-db" target="1.8" />
-      <module name="changgou-eureka" target="1.8" />
-      <module name="changgou-gateway" target="1.8" />
-      <module name="changgou-gateway-web" target="8" />
-      <module name="changgou-parent" target="1.8" />
-      <module name="changgou-service" target="1.8" />
-      <module name="changgou-service-api" target="1.8" />
-      <module name="changgou-service-canal" target="8" />
-      <module name="changgou-service-content" target="8" />
-      <module name="changgou-service-content-api" target="8" />
-      <module name="changgou-service-file" target="1.8" />
-      <module name="changgou-service-goods" target="1.8" />
-      <module name="changgou-service-goods-api" target="1.8" />
-      <module name="changgou-service-order" target="8" />
-      <module name="changgou-service-order-api" target="8" />
-      <module name="changgou-service-pay" target="8" />
-      <module name="changgou-service-search" target="8" />
-      <module name="changgou-service-search-api" target="8" />
-      <module name="changgou-service-user" target="8" />
-      <module name="changgou-service-user-api" target="8" />
-      <module name="changgou-user-oauth" target="1.8" />
-      <module name="changgou-web" target="1.8" />
-      <module name="changgou-web-search" target="8" />
-      <module name="code-template" target="1.8" />
-      <module name="springboot-thymeleaf" target="8" />
+      <module name="changgou-service-seckill.main" target="1.8" />
+      <module name="changgou-service-seckill.test" target="1.8" />
     </bytecodeTargetLevel>
   </component>
   <component name="JavacSettings">
@@ -76,6 +54,8 @@
       <module name="changgou-service-pay" options="-parameters" />
       <module name="changgou-service-search" options="-parameters" />
       <module name="changgou-service-search-api" options="-parameters" />
+      <module name="changgou-service-seckill" options="-parameters" />
+      <module name="changgou-service-seckill-api" options="-parameters" />
       <module name="changgou-service-user" options="-parameters" />
       <module name="changgou-service-user-api" options="-parameters" />
       <module name="changgou-user-oauth" options="-parameters" />
