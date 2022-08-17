@@ -58,6 +58,16 @@ public class SeckillOrderServiceImpl implements SeckillOrderService {
      */
     @Override
     public Boolean add(String time, Long id, String username) {
+        //记录用户排队的次数
+        //1."key"
+        //2."自增的值"
+        Long userQueueCount = redisTemplate.boundHashOps("UserQueueCount").increment(username, 1);
+        if(userQueueCount >1){
+            //100表示重复排队
+            throw  new RuntimeException("100");
+        }
+
+
         //创建排队对象
         SeckillStatus seckillStatus = new SeckillStatus(username, new Date(), 1, id, time);
         //List是队列类型（有序） 用户抢单排队

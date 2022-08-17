@@ -47,8 +47,8 @@ public class SeckillOrderController {
      * 用户的登录名字
      */
     @RequestMapping(value = "/add")
-    public Result add(String time,Long id){
-        String username = "szitheima";
+    public Result add(String time,Long id,String username){
+        //String username = "szitheima";
 
         seckillOrderService.add(time,id,username);
         return new Result(true, StatusCode.OK,"正在排队...！");

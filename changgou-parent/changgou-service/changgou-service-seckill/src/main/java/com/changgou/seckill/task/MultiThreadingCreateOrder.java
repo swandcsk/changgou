@@ -49,11 +49,20 @@ public class MultiThreadingCreateOrder {
             String time = seckillStatus.getTime();
             Long id = seckillStatus.getGoodsId();
             String username = seckillStatus.getUsername();
+            //先到SeckillGoodsCountList_ID队列中获取该商品的一个信息，如果能获取，则可以下单
+            Object sgoods = redisTemplate.boundListOps("SeckillGoodsCountList_" + seckillStatus.getGoodsId()).rightPop();
+            //如果不能获取该商品的队列信息，则表示没有库存，清理排队信息
+            if(sgoods ==null){
+                //表示没有库存，清理排队信息
+                clearUserQueue(username);
+                return;
+            }
 
             //查询秒杀商品
             String namespace = "SeckillGoods_" + time;
             SeckillGoods seckillGoods = (SeckillGoods)redisTemplate.boundHashOps(namespace).get(id);
 
+            //推荐用redis自增（未实现）
             //判断有没有库存
             if(seckillGoods == null || seckillGoods.getStockCount()<=0){
                 //没了
@@ -85,7 +94,15 @@ public class MultiThreadingCreateOrder {
              * 商品有可能是最后一个，如果是最后一个，则将redis中商品信息删除，并且将redis中该商品的数据同步到mysql
              */
             seckillGoods.setStockCount(seckillGoods.getStockCount()-1);
-            if(seckillGoods.getStockCount()<=0){
+            Thread.sleep(10000);
+            System.out.println(Thread.currentThread().getId() +"操作后剩余库存=" + seckillGoods.getStockCount());
+            //获取该商品队列的数量
+            Long size = redisTemplate.boundListOps("SeckillGoodsCountList_" + seckillStatus.getGoodsId()).size();
+
+            //if(seckillGoods.getStockCount()<=0){
+            if(size<=0){
+                //同步数量
+                seckillGoods.setStockCount(size.intValue());
                 //同步数据到mysql
                 seckillGoodsMapper.updateByPrimaryKeySelective(seckillGoods);
                 //删除redis中的商品数据
@@ -104,5 +121,16 @@ public class MultiThreadingCreateOrder {
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    /**
+     * 清理用户排队抢单信息
+     *
+     */
+    public void clearUserQueue(String username){
+        //排队标识
+        redisTemplate.boundHashOps("UserQueueCount").delete(username);
+        //排队信息
+        redisTemplate.boundHashOps("UserQueueStatus").delete(username);
     }
 }
