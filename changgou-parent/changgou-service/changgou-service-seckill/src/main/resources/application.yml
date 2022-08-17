@@ -47,3 +47,13 @@ hystrix:
           thread:
             timeoutInMilliseconds: 10000
           strategy: SEMAPHORE
+
+#秒杀支付交换机和队列
+mq:
+  pay:
+    exchange:
+      seckillorder: exchange.seckillorder
+    queue:
+      seckillorder: queue.seckillorder
+    routing:
+      seckillkey: queue.seckillorder

@@ -53,9 +53,13 @@ public class WeixinPayController {
         //XML字符串->Map
         Map<String, String> resultMap = WXPayUtil.xmlToMap(xmlresult);
         System.out.println(resultMap);
+        //获取自定义参数
+        String attach = resultMap.get("attach");
+        Map<String,String> attachMap = JSON.parseObject(attach,Map.class);
+
 
         //发送支付结果给mq
-        rabbitTemplate.convertAndSend("exchange.order","queue.order", JSON.toJSONString(resultMap));
+        rabbitTemplate.convertAndSend(attachMap.get("exchange"),attachMap.get("routingkey"), JSON.toJSONString(resultMap));
 
         String result = "<xml><return_code><![CDATA[SUCCESS]]></return_code><return_msg><![CDATA[OK]]></return_msg></xml>";
         return result;
@@ -74,6 +78,15 @@ public class WeixinPayController {
 
     /**
      * 创建支付二维码
+     * 普通订单：
+     *      exchange:exchange.order
+     *      routingkey:queue.order
+     *
+     * 秒杀订单:
+     *      exchange:exchange.seckillorder
+     *      routingkey:queue.seckillorder
+     *
+     * exchange+routingkey->json->attach
      */
     @RequestMapping(value = "/create/native")
     public Result createNative(@RequestParam Map<String,String> parameterMap){

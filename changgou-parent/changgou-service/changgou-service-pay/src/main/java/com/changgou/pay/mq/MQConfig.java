@@ -40,4 +40,32 @@ public class MQConfig {
         return BindingBuilder.bind(orderQueue).to(orderExchange).with(env.getProperty("mq.pay.routing.key")).noargs();
     }
 
+    /************************秒杀队列创建**********************************
+
+    /**
+     * 创建队列
+     */
+    @Bean
+    public Queue orderSeckillQueue(){
+        return new Queue(env.getProperty("mq.pay.queue.seckillorder"));
+    }
+
+    /**
+     * 创建交换机
+     */
+    @Bean
+    public Exchange orderSeckillExchange(){
+        return new DirectExchange(env.getProperty("mq.pay.exchange.seckillorder"),true,true);
+    }
+
+    /**
+     * 队列绑定交换机
+     */
+    @Bean
+    public Binding orderSeckillQueueExchange(Queue orderSeckillQueue,Exchange orderSeckillExchange){
+        return BindingBuilder.bind(orderSeckillQueue).to(orderSeckillExchange).with(env.getProperty("mq.pay.routing.seckillkey")).noargs();
+    }
+
+
+
 }
